@@ -1,0 +1,58 @@
+ // const fontFamilyNames = ["Arial", "Helvetica", "sans-serif", "Gill Sans", "sans-serif", "serif", "cursive", "system-ui", "Pacifico", "Satisfy", "Anton"];
+    // const fontStyleNames = ["normal", "Bold", "itelic", "oblique"];
+
+
+
+
+
+
+ 
+    // Save the canvas to ref so it can be accessed later
+    // canvasRef.current.canvas = canvas;
+
+    // Download file
+    // const downloadImage = () => {
+    //     const canvas = canvasRef.current.canvas;
+    //     const dataURL = canvas.toDataURL({
+    //         format: 'png',
+    //         quality: 1,
+    //     });
+    //     const link = document.createElement('a');
+    //     link.href = dataURL;
+    //     link.download = 'canvas.png';
+    //     link.click();
+    // };
+
+
+
+
+
+
+
+
+
+  {/* <div >
+                <div>
+                    <span>Font Name :</span>
+                    <select id="dropdown" name="dropdown">
+                        {fontFamilyNames.map((font, index) => (
+                            <option key={index} value={font} className={`font-[${font}]`}>{font}</option>
+                        ))}
+                    </select>
+                </div>
+
+                <div>
+                    <span>font style:</span>
+                    <select id="dropdown" name="dropdown">
+                        {fontStyleNames.map((font) => (
+                            <option key={font} value={font} className={`font-[${font}]`}>{font}</option>
+                        ))}
+                    </select>
+                </div>
+
+
+                <div>
+                    <span>font size:</span>
+                    <input type='number' name='fontSizeNum' min={1} max={100}  />
+                </div>
+            </div> */}
