@@ -2,8 +2,6 @@ import React, { useContext, useEffect } from 'react'
 import OffersDescount from '../components/OffersDescounts/OffersDescount';
 import ProductsCard from '../components/ProductCards/ProductsCard';
 import { FcFlashOn } from 'react-icons/fc'
-import { TrandingCategoriesTitle } from '../components/Tranding/TrandingCategoriesTitle';
-import TrandingCategiesCard from '../components/Tranding/TrandingCategiesCard';
 import BestSellingTitle from '../components/BestSelling/BestSellingTitle';
 import Carousel from '../components/BestSelling/Carousel';
 import NewArrivalTitle from '../components/NewArrival/NewArrivalTitle';
@@ -11,9 +9,9 @@ import NewArrivalCarousel from '../components/NewArrival/NewArrivalCarousel';
 import { Context } from '../Utils/Context';
 import { Link } from 'react-router-dom';
 import Informations from '../components/InformationCard/Informations';
+import FlaseDeal from '../components/FlaseDealCard/FlaseDeal';
 
 function Index() {
-
   const { getTranding } = useContext(Context);
 
   useEffect(() => {
@@ -25,14 +23,32 @@ function Index() {
       {/* Top Header productes card */}
       <div className=''>
         <OffersDescount />
-
       </div>
 
       {/* Flase deal productes cards*/}
       <span className='text-2xl font-bold font-sans capitalize p-2 flex items-center'><span className='text-yellow-800 border-none'><FcFlashOn size={35} /></span>Flash deals</span>
-      <div className='mx-auto md:w-[95%]'>
+      <div className='mx-auto w-full'>
         <ProductsCard />
       </div>
+
+      {/* Trandding categories */}
+      <div>
+        {/* <TrandingCategoriesTitle /> */}
+        <div className='w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-5 gap-x-14 mt-5 mb-5'>
+          {
+            getTranding?.data?.map((item) => (
+              <Link to={`product/${item?.slug}`} key={item.id} >
+                <FlaseDeal thum={item?.Thumbnail[0]?.url} titles={item?.Title} price={item?.Price} lessPrice={item?.orignal_price} />
+              </Link>
+            )) ||
+            <div >
+              Loading...
+            </div>
+          }
+        </div>
+      </div>
+      {/* ################################################ */}
+      {/* </div> */}
 
       {/* Bast Selling */}
       <BestSellingTitle />
@@ -41,30 +57,9 @@ function Index() {
       </div>
       {/* ################################################ */}
 
-      {/* Trandding categories */}
-      <div>
-        <TrandingCategoriesTitle />
-        <div className='w-[100%] md:w-[95%] xl:w-[90%] mx-auto mt-2 h-full my-5 border-2 '>
-          <div className='grid gap-2 md:gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-5 xl:grid-cols-6 h-fit'>
-            {
-              getTranding?.data?.map((item) => (
-                <Link to={`product/${item?.attributes?.slug}`} key={item.id} className='h-40 w-36 md:h-56 md:w-48'>
-                  <TrandingCategiesCard thum={item?.attributes?.Thumbnail?.data?.attributes?.url} />
-                </Link>
-              ))
-            }
-          </div>
-        </div>
-        {/* ################################################ */}
-      </div>
-
-      <NewArrivalTitle />
-      <div className='w-[100%] md:w-[95%] xl:w-[90%] mx-auto mt-2 h-full my-5'>
-        <div className='grid gap-2 md:gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-5 xl:grid-cols-6'>
-        </div>
-      </div>
       {/* ################################################ */}
-      <div className='w-[80%] mx-auto my-5'>
+      <NewArrivalTitle />
+      <div className='w-[80%] mx-auto py-9'>
         <NewArrivalCarousel />
       </div>
 

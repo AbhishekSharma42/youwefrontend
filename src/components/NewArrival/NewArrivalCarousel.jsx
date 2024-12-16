@@ -6,11 +6,11 @@ import { Link } from 'react-router-dom';
 
 const NewArrivalCarousel = () => {
 
-  const { PhoneCrouselCardSize, getNewArrival } = useContext(Context);
+  const { getNewArrival } = useContext(Context);
 
   var settings = {
     infinite: true,
-    slidesToShow: 6,
+    slidesToShow: 4,
     slidesToScroll: 1,
     autoplay: true,
     speed: 100,
@@ -41,7 +41,7 @@ const NewArrivalCarousel = () => {
         breakpoint: 480,
         settings: {
           dots: true,
-          slidesToShow: PhoneCrouselCardSize,
+          slidesToShow: 1,
           slidesToScroll: 2
         }
       }
@@ -53,8 +53,8 @@ const NewArrivalCarousel = () => {
       <Slider {...settings}>
         {
           getNewArrival?.data?.map((item) => (
-            <Link to={`product/${item?.attributes?.slug}`} key={item.id} className='h-40 w-36 md:h-56 md:w-48'>
-              <NewArrival thum={item?.attributes?.Thumbnail?.data?.attributes?.url} />
+            <Link to={`product/${item?.slug}`} key={item.id} className='w-60'>
+              <NewArrival thum={item?.Thumbnail[0]?.url} titles={item?.Title} price={item?.Price}/>
             </Link>
           ))
         }

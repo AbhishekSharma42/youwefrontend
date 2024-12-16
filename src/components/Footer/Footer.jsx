@@ -32,7 +32,7 @@ const Footer = () => {
             <div className='flex flex-col gap-2'>
                 <div className='text-white font-bold text-xl md:text-2xl md:my-2'>Contact Us</div>
 
-                <div className='flex items-center gap-2 hover:text-red-400 w-fit cursor-pointer'> <IoCall /><a href="tel:7579811117">{Phone}</a></div>
+                <div className='flex items-center gap-2 hover:text-red-400 w-fit cursor-pointer'> <IoCall /><a href={`tel:${Phone}`}>{Phone}</a></div>
 
                 <div className='flex items-center gap-2 hover:text-red-400 w-fit cursor-pointer'>   <IoMailOutline size={20} /><a href={`mailto:${mail}`}>Contact with mail</a>
                 </div>

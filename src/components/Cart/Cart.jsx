@@ -2,10 +2,33 @@ import React, { useContext } from 'react'
 import CartTitleBar from './CartTitleBar'
 import MainCart from './MainCart'
 import { Context } from '../../Utils/Context'
+import { loadStripe } from '@stripe/stripe-js'
 
 const Cart = () => {
 
     const { getCartProduct, getCartCount } = useContext(Context);
+
+
+    // const makepayment = () => { baseUrl: "http://localhost:1337/api/" }
+
+
+    const stripePromis = loadStripe("pk_test_51QRQf7IWr0tdfziPZMkeWugFToRyMJZpxAEtPCQB0I2BDdpWgAAW71ZFY8nVvVR1N5ud9sDisHQYVTRa39PlJiGR00hA3HbjR9");
+
+    const handlePayment = async () => {
+        try {
+
+            const stripe = await stripePromis;
+            const res = await fetch("http://localhost:1337/api/orders");
+            const resData = await res.json();
+            console.log(resData);
+
+            await stripe.redirectToCheckout({
+                sessionId: resData?.data[0]?.id
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <>
@@ -28,12 +51,11 @@ const Cart = () => {
 
                             {
                                 getCartProduct?.map((items) => (
-                                    <div key={items?.attributes?.slug}>
-                                        <MainCart renders={`/product/${items?.attributes?.slug}`} thum={items?.attributes?.Thumbnail?.data?.attributes?.url} realPrice={items?.attributes?.Price} Qty={items?.attributes?.quantity} sData={items}/>
+                                    <div key={items?.slug}>
+                                        <MainCart renders={`/product/${items?.slug}`} thum={items?.Thumbnail[0]?.url} realPrice={items?.Price} Qty={items?.quantity} sData={items} />
                                     </div>
                                 ))
                             }
-
                         </div>
                     </div>
 
@@ -46,7 +68,7 @@ const Cart = () => {
                         </div>
                         <hr className='w-[90%] h-[3px] bg-slate-300 mx-auto mt-3 md:mt-8' />
                         <div className='flex justify-center bottom-5'>
-                            <button className='uppercase bg-blue-800 hover:bg-red-600 rounded-sm h-11 w-40 m-3 text-white mx-auto'>Checkout</button>
+                            <button className='uppercase bg-blue-800 hover:bg-red-600 rounded-sm h-11 w-40 m-3 text-white mx-auto' onClick={handlePayment}>Checkout</button>
                         </div>
                     </div>
                 </div>

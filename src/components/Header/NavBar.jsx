@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FaSearch, FaShoppingCart, FaBars, FaUserAlt } from 'react-icons/fa'
 import { RxCross1 } from "react-icons/rx";
-import SearchBar from './SearchBar/SearchBar';
 import { Context } from '../../Utils/Context';
 
 function NavBar() {
@@ -11,7 +10,7 @@ function NavBar() {
 
     const [openNav, SetNav] = useState(false);
     const [getProfile, SetProfile] = useState(false);
-    const { openSearch, SearchBarHendle } = useContext(Context);
+
 
     const OpenNavBar = () => {
         if (openNav === false) { SetNav(true); }
@@ -43,7 +42,7 @@ function NavBar() {
                 <div className=" text-2xl cursor-pointer first-line:font-bold md:center md:text-2xl sm:text-xl "><Link to="/">{appName}</Link> </div>
                 <div>
                     <ul className="text-lg gap-2 flex md:text-xl md:gap-1 md:space-x-5 sm:space-x-2 md:items-center ">
-                        <Link className={`${openSearch ? "text-red-500" : ""} rounded-xl p-1 cursor-pointer`} onClick={SearchBarHendle} ><FaSearch /></Link>
+                        <Link to="/serach" className={`rounded-xl p-1 cursor-pointer`} ><FaSearch /></Link>
                         <Link to="cart" className='hover:text-red-500 rounded-xl p-1 cursor-pointer ' ><FaShoppingCart />
                             <div className='absolute top-3 pl-5 text-red-600 text-sm font-extrabold'>
                                 {getCartCount}
@@ -54,9 +53,7 @@ function NavBar() {
                 </div>
 
             </div>
-            <div className={` ${openSearch ? "-mt-0 sticky top-0 z-30 " : "-mt-[90vh] z-0 "} transition-all duration-300`}>
-                <SearchBar />
-            </div>
+
             <div className={`z-40 ${getProfile ? " top-12 " : "top-[-13rem]"}  fixed right-[-40px] md:right-0 bg-cyan-950 h-fit w-32 flex flex-col p-5 rounded-b-md mr-10 transition-all duration-200`} >
 
                 {/* Some featurese */}

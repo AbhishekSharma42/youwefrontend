@@ -15,7 +15,7 @@ import Catageries from './pages/Catageries';
 import ProductByCategory from './pages/ProductByCategory';
 import Login from './pages/Auth/Login';
 import SingUp from './pages/Auth/SingUp';
-
+import SearchBar from './pages/SearchBar';
 
 export default function App() {
   return (
@@ -25,17 +25,17 @@ export default function App() {
         <Routes>
 
           {/* User can access with out login  */}
-          
           <Route path="" element={<Index />} />
           <Route path="contact" element={<ContactUs />} />
           {/* <Route path="LogIn" element={<Login />} /> */}
-          <Route path="SingUp" element={<SingUp/>}/>
+          <Route path="SingUp" element={<SingUp />} />
           <Route path="/product/:str" element={<ProductDetailCard />} />
-          <Route path="product-category/:str" element={<ProductByCategory/>} />
+          <Route path="product-category/:str" element={<ProductByCategory />} />
           <Route path="catagres" element={<Catageries />} />
           <Route path="catagres/:str" element={<Catageries />} />
           <Route path="cart" element={<Cart />} />
           <Route path='customize' element={<CustomDesign />} />
+          <Route path='serach' element={<SearchBar />} />
           <Route path='Galary' element={<Galary />} />
           <Route path="*" element={<PageNotFound />} />
 

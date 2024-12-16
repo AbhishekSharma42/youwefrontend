@@ -13,14 +13,8 @@ const AppContext = (props) => {
         if (openSearch === false) { SetSearch(true) }
         else { SetSearch(false); }
     }
-    // #######################################
 
-    // Top Banner data handle
-    const [TopBannerHeading, setTopBannerHeading] = useState("");
-    const [TopBannerParagraph, setTopBannerParagraph] = useState("");
-    const [TopBannerImg, setTopBannerImg] = useState("https://imagescdn.thecollective.in/img/app/product/8/898415-10977834.jpg?w=900&amp;auto=format");
     // #######################################
-
     // Phone Crousel CardSize
     // #####################################
     const [PhoneCrouselCardSize] = useState(2);
@@ -60,64 +54,83 @@ const AppContext = (props) => {
     const [getReletedSlug, SetReletedSlug] = useState([]);
 
     // #################################################
-
-
     //  set the data in shoppin cart
     const BestSelling = async () => {
-        const res = await fetch(`http://localhost:1337/api/listings?&[filters][categories][name]=BestSalling&pagination[start]=0&pagination[limit]=10&populate=*`);
-        const resData = await res.json();
-        setBestSelling(resData);
+        try {
+            const res = await fetch(`${process.env.REACT_APP_API_URL}/products?[filters][categories][Title]=BestSalling&pagination[start]=0&populate=*&pagination[limit]=10`);
+            const resData = await res.json();
+            setBestSelling(resData);
+        } catch (error) {
+            return;
+        }
     }
 
 
 
     const Getproduct = async () => {
-        const res = await fetch(`http://localhost:1337/api/listings?populate=*`);
-        const resData = await res.json();
-        setProducts(resData);
+        try {
+            const res = await fetch(`${process.env.REACT_APP_API_URL}/products?populate=*`);
+            const resData = await res.json();
+            setProducts(resData);
+
+        } catch (error) {
+            return;
+        }
     }
 
 
 
     const Homepagedata = async () => {
-        const res = await fetch(`http://localhost:1337/api/footers`);
-        const resData = await res.json();
+        try {
+            const res = await fetch(`${process.env.REACT_APP_API_URL}/footers?populate=*`);
+            const resData = await res.json();
 
-        // setTopBannerHeading(resData[0]?.TopBanner_title);
-        // setTopBannerParagraph(resData[0]?.TopBanner_paragraph);
-        // setTopBannerImg(resData[0]?.TopBanner_image);
+            setAppName(resData?.data[0]?.attributes?.Title);
+            setFooteText(resData?.data[0]?.attributes?.Text);
 
-        setAppName(resData?.data[0]?.attributes?.Title);
-        setFooteText(resData?.data[0]?.attributes?.Text);
-
-        SetPhone(resData?.data[0]?.attributes?.ContactNum);
-        setmail(resData?.data[0]?.attributes?.Email);
+            SetPhone(resData?.data[0]?.attributes?.ContactNum);
+            setmail(resData?.data[0]?.attributes?.Email);
+        } catch (error) {
+            return;
+        }
     }
-
 
 
     // New arrival method 
     const NewArrival = async () => {
-        const res = await fetch(`http://localhost:1337/api/listings?&[filters][categories][name]=NewArrival&pagination[start]=0&pagination[limit]=10&populate=*`);
-        const resData = await res.json();
-        setNewArrival(resData);
+        try {
+            const res = await fetch(`${process.env.REACT_APP_API_URL}/products?&[filters][categories][Title]=NewArrival&pagination[start]=0&pagination[limit]=10&populate=*`);
+            const resData = await res.json();
+            setNewArrival(resData);
+
+        } catch (error) {
+            return;
+        }
     }
 
 
     // Tranding data get from the api  
     const [getTranding, SetTranding] = useState({})
     const Trandding = async () => {
-        const res = await fetch(`http://localhost:1337/api/listings?&[filters][categories][name]=TrandingProduct&pagination[start]=0&pagination[limit]=10&populate=*`);
-        const resData = await res.json();
-        SetTranding(resData);
+        try {
+            const res = await fetch(`${process.env.REACT_APP_API_URL}/products?&[filters][categories][Title]=TrandingProduct&pagination[start]=0&pagination[limit]=10&populate=*`);
+            const resData = await res.json();
+            SetTranding(resData);
+        } catch (error) {
+            return;
+        }
     }
 
     // all category fech from api
     const [getAllCategory, setAllcategory] = useState({})
     const AllCategory = async () => {
-        const res = await fetch(`http://localhost:1337/api/categories?&populate=*`);
-        const resData = await res.json();
-        setAllcategory(resData);
+        try {
+            const res = await fetch(`${process.env.REACT_APP_API_URL}/categories?populate=*`);
+            const resData = await res.json();
+            setAllcategory(resData);
+        } catch (error) {
+            return;
+        }
     }
 
     useEffect(() => {
@@ -130,38 +143,38 @@ const AppContext = (props) => {
     }, []);
 
 
-    const handleAddToCart = (product, color, Qty) => {
+    const handleAddToCart = (products, color, Qty) => {
         let items = [...getCartProduct];
-        let index = items.findIndex(p => p.id === product.id);
+        let index = items.findIndex(p => p.id === products.id);
 
         if (index !== -1) {
-            items[index].attributes.quantity += Qty;
-            items[index].attributes.Colors = color;
+            items[index].quantity += Qty;
+            items[index].Colors = color;
             // items[index].attributes.size = sizes;
         } else {
-            product.attributes.quantity = Qty
-            items = [...items, product];
+            products.quantity = Qty
+            items = [...items, products];
         }
 
         SetCartProduct(items);
         localStorage.setItem('MyYouWE', JSON.stringify(getCartProduct));
     }
 
-    const handleRemoveToCart = (product) => {
+    const handleRemoveToCart = (products) => {
         let items = [...getCartProduct];
-        items = items.filter(p => p.id !== product.id)
+        items = items.filter(p => p.id !== products.id)
         SetCartProduct(items);
     }
 
-    const handleQtyToCart = (type, product) => {
+    const handleQtyToCart = (type, products) => {
         let items = [...getCartProduct];
-        let index = items.findIndex(p => p.id === product.id);
+        let index = items.findIndex(p => p.id === products.id);
 
         if (type === "inc") {
-            items[index].attributes.quantity += 1;
+            items[index].quantity += 1;
         } else if (type === "dec") {
-            if (items[index].attributes.quantity === 1) return;
-            items[index].attributes.quantity -= 1;
+            if (items[index].quantity === 1) return;
+            items[index].quantity -= 1;
         }
         SetCartProduct(items);
     }
@@ -169,7 +182,7 @@ const AppContext = (props) => {
 
     return (
         <Context.Provider value={{
-            appName, TopBannerHeading, PhoneCrouselCardSize, TopBannerParagraph, TopBannerImg, FooteText, Phone, mail, contactUsHading, openSearch, SetSearch, SearchBarHendle, bestsallings, pruducts, getNewArrival, getTranding, getAllCategory,
+            appName, PhoneCrouselCardSize, FooteText, Phone, mail, contactUsHading, openSearch, SetSearch, SearchBarHendle, bestsallings, pruducts, getNewArrival, getTranding, getAllCategory,
 
             // Find releted product
             getReletedProduct, SetReletedProduct,

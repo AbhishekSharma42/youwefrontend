@@ -1,44 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import Slider from 'react-slick';
-import Markdown from 'react-markdown';
+import Markdown from 'markdown-to-jsx';
 import { Context } from '../Utils/Context';
 import Goto from '../GoToUp';
 import ReletedProducts from '../components/ReletedProduct/ReletedProducts';
 
 function ProductDetailCard() {
-
-    var settings = {
-        infinite: true,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        autoplay: true,
-        speed: 300,
-        autoplaySpeed: 3000,
-        cssEase: "linear",
-        pauseOnHover: true,
-        responsive: [
-            {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 1,
-                }
-            },
-            {
-                breakpoint: 600,
-                settings: {
-                    slidesToShow: 1,
-                }
-            },
-            {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 1,
-                }
-            }
-        ]
-    };
 
     const { handleAddToCart, SetReletedProduct, SetReletedSlug } = useContext(Context)
 
@@ -49,181 +17,175 @@ function ProductDetailCard() {
     const [ptitle, setPtitle] = useState();
     const [Prices, setPrices] = useState();
     const [orignalPrices, setOrignalPrices] = useState();
-    const [resSize, setResSize] = useState(0);
     const [cartData, setCartData] = useState();
     const [images, setImages] = useState();
-    const [sizeValue, setSizeValue] = useState("");
+    // const [resSize, setResSize] = useState(0);
+    // const [sizeValue, setSizeValue] = useState("");
+    const [getDesc, setDesc] = useState("");
+    const [getPID, setPID] = useState("");
+
 
     // this method for product detele into the single page 
     const GetProductDetail = async () => {
-        const res = await fetch(`http://localhost:1337/api/listings?filters[slug][$eq]=${str}&populate=*`);
-        const resData = await res.json();
-        setThum(resData?.data[0]?.attributes?.Thumbnail?.data?.attributes?.formats?.thumbnail?.url);
 
-        setImages(resData?.data[0]?.attributes?.Image?.data)
+        try {
+            const res = await fetch(`${process.env.REACT_APP_API_URL}/products?filters[slug][$eq]=${str}&populate=*`);
+            const resData = await res.json();
 
-        setCartData(resData?.data[0])
-
-        setPtitle(resData?.data[0]?.attributes?.Title);
-        setPrices(resData?.data[0]?.attributes?.Price);
-        setOrignalPrices(resData?.data[0]?.attributes?.orignal_price);
-        setResSize(resData);
-
-        SetReletedSlug(resData?.data[0]?.attributes?.categories?.data[0]?.attributes?.slug);
-        SetReletedProduct(resData?.data[0]?.attributes?.categories?.data[0]?.attributes?.name);
+            setThum(resData?.data[0]?.Thumbnail[0]?.url);
+            setImages(resData?.data[0]?.Image)
+            
+            setCartData(resData?.data[0])
+            
+            setPID(resData?.data[0]?.id)
+            
+            setDesc(resData?.data[0]?.Description);
+            
+            setPtitle(resData?.data[0]?.Title);
+            setPrices(resData?.data[0]?.Price);
+            setOrignalPrices(resData?.data[0]?.orignal_price);
+            
+            SetReletedSlug(resData?.data[0]?.attributes?.categories?.data[0]?.attributes?.slug);
+            SetReletedProduct(resData?.data[0]?.attributes?.categories?.data[0]?.attributes?.name);
+            
+        } catch (error) {
+            return;
+        }
     }
 
-    const handleChange = (e) => {
-        setSizeValue(e.target.value);
-    };
+    // const handleChange = (e) => {
+    //     setSizeValue(e.target.value);
+    // };
 
+
+    function changeImage(src) {
+        document.getElementById('mainImage').src = src;
+    }
+    GetProductDetail();
 
     useEffect(() => {
-        GetProductDetail();
         Goto();
     }, [str])
 
-
-
     return (
         <>
-            <section className="text-gray-700 body-font overflow-hidden">
-                <div className="container px-5 my-10 md:py-2 mx-auto">
-                    <div className="lg:w-4/5 mx-auto flex flex-wrap border bg-white shadow-xl p-3 rounded-sm ">
+            <div className="container flex justify-center">
+                <div className=" sm:w-[80%] justify-center flex">
+                    <div className="container mx-auto px-4 py-8">
+                        <div className="flex flex-wrap -mx-4">
+                            <div className="w-full md:w-1/2 px-4 mb-8">
+                                <LazyLoadImage src={thum} alt="Product" className="m-2  bg-white mx-auto h-96 rounded-lg shadow-md mb-4" id="mainImage" />
 
-                        <div className='w-80 md:h-[25rem] object-cover object-center rounded-md mx-auto'>
-                            <Slider {...settings} className='mx-auto h-full w-full '>
-                                <LazyLoadImage effect='blur' alt="ecommerce" className="bg-red-400 h-96 object-cover object-center rounded-sm border border-gray-200 " src={thum} />
-                                {images?.map((item) => (
-                                    <LazyLoadImage effect='blur' key={item.id} alt="ecommerce" className="bg-red-500 h-96 mx-auto object-cover object-center rounded-sm border" src={item?.attributes?.formats?.thumbnail?.url} />
-                                ))}
-                            </Slider>
-                        </div>
-
-                        <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
-                            <h2 className="text-sm title-font text-gray-500 tracking-widest">BRAND NAME</h2>
-                            <h1 className="text-gray-900 text-2xl md:text-3xl title-font font-medium mb-1">{ptitle}</h1>
-
-                            <div className="flex mb-4">
-
-                                {/* ************************************************************************************* */}
-                                {/* Rating Stars */}
-                                {/* ************************************************************************************* */}
-                                <span className="flex items-center">
-                                    <svg fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin='round' strokeWidth="2" className="w-4 h-4 text-red-500" viewBox="0 0 24 24">
-                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                                    </svg>
-                                    <svg fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 text-red-500" viewBox="0 0 24 24">
-                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                                    </svg>
-                                    <svg fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 text-red-500" viewBox="0 0 24 24">
-                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                                    </svg>
-                                    <svg fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 text-red-500" viewBox="0 0 24 24">
-                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                                    </svg>
-                                    <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 text-red-500" viewBox="0 0 24 24">
-                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                                    </svg>
-                                    <span className="text-gray-600 ml-3">4 Reviews</span>
-                                </span>
-                                {/* ************************************************************************************* */}
-
-
-                                <span className="flex ml-3 pl-3 py-2 border-l-2 border-gray-200">
-                                    <div className="text-gray-500">
-                                        <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5" viewBox="0 0 24 24">
-                                            <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path>
-                                        </svg>
-                                    </div>
-                                    <div className="ml-2 text-gray-500">
-                                        <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5" viewBox="0 0 24 24">
-                                            <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"></path>
-                                        </svg>
-                                    </div>
-                                    <div className="ml-2 text-gray-500">
-                                        <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5" viewBox="0 0 24 24">
-                                            <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"></path>
-                                        </svg>
-                                    </div>
-                                </span>
+                                <div className="flex gap-4 py-4 justify-center overflow-x-auto">
+                                    {images?.map((item) => (
+                                        <LazyLoadImage key={item?.id} src={item?.url} alt={item?.url}
+                                            className="w-fit h-24 p-2 flex justify-center bg-white sm:size-18 object-cover rounded-md cursor-pointer hover:opacity-100 transition duration-300 border-2 shadow-md"
+                                            onClick={() => changeImage(item?.url)}
+                                        />
+                                    )) ||
+                                        <LazyLoadImage />
+                                    }
+                                </div>
                             </div>
 
-                            {/* Product detail  */}
-                            <span className='text-2xl'>Product details:</span>
-                            <h3 className="leading-relaxed">............</h3>
-                            <span className="leading-relaxed">
+                            {/* show detele */}
+                            <div className="w-full md:w-1/2 px-4 bg-white shadow-md rounded-md py-2">
+                                <h2 className="text-3xl font-bold mb-2">{ptitle}</h2>
+                                <p className="text-gray-600 mb-4">Product Id:- #{getPID}</p>
+                                <div className="mb-4">
+                                    <span className="text-2xl font-bold mr-2"> &#x20b9;
+                                        {Prices}</span>
+                                    <span className="line-through text-red-500">&#x20b9;{orignalPrices}</span>
+                                </div>
+                                <div className="flex items-center mb-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                        className="size-6 text-yellow-500">
+                                        <path fillRule="evenodd"
+                                            d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                                            clipRule="evenodd" />
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                        className="size-6 text-yellow-500">
+                                        <path fillRule="evenodd"
+                                            d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                                            clipRule="evenodd" />
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                        className="size-6 text-yellow-500">
+                                        <path fillRule="evenodd"
+                                            d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                                            clipRule="evenodd" />
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                        className="size-6 text-yellow-500">
+                                        <path fillRule="evenodd"
+                                            d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                                            clipRule="evenodd" />
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                        className="size-6 text-yellow-500">
+                                        <path fillRule="evenodd"
+                                            d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                                            clipRule="evenodd" />
+                                    </svg>
+                                    <span className="ml-2 text-gray-600">4.5 (120 reviews)</span>
+                                </div>
                                 <Markdown>
-                                    hii hello
+                                    {getDesc ? getDesc : "NON"}
                                 </Markdown>
-                            </span>
-                            {/* ****************************************************************************************** */}
 
-                            {/*Cloth colors */}
-                            <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-200 mb-5">
-                                <div className="flex">
-                                    <span className="mr-3">Color</span>
-                                    <button className="border-2 border-gray-300 rounded-full w-6 h-6 focus:outline-none"></button>
-                                    <button className="border-2 border-gray-300 ml-1 bg-gray-700 rounded-full w-6 h-6 focus:outline-none"></button>
-                                    <button className="border-2 border-gray-300 ml-1 bg-red-500 rounded-full w-6 h-6 focus:outline-none"></button>
-                                </div>
-
-                                {/* cloth sizes  */}
-                                <div className="flex ml-6 items-center">
-                                    <span className="mr-3">Size</span>
-                                    <div className="relative">
-
-                                        <select className="rounded border appearance-none border-gray-400 py-2 focus:outline-none focus:border-red-500 text-base pl-3 pr-10" onChange={handleChange} value={sizeValue}>
-                                            {resSize?.data?.map((item) => (
-                                                item?.attributes?.size?.map((s) => (
-                                                    <option key={s.size} value={s.size}>{s.size}</option>
-                                                ))
-                                            ))}
-                                        </select>
-
-                                        <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
-                                            <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4" viewBox="0 0 24 24">
-                                                <path d="M6 9l6 6 6-6">99999999</path>
-                                            </svg>
-                                        </span>
-
+                                <div className="mb-6">
+                                    <h3 className="text-lg font-semibold mb-2">Color:</h3>
+                                    <div className="flex space-x-2">
+                                        <button
+                                            className="w-8 h-8 bg-black rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"></button>
+                                        <button
+                                            className="w-8 h-8 bg-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300"></button>
+                                        <button
+                                            className="w-8 h-8 bg-blue-500 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"></button>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div className="flex">
-
-                                <div className='flex gap-3'>
-                                    <span className="title-font font-medium text-2xl text-red-600">
-                                        <del>
-                                            &#x20b9;
-                                            {orignalPrices}
-                                        </del>
-                                    </span>
-                                    <span className="title-font font-medium text-2xl text-gray-900">&#x20b9;{Prices}</span>
+                                <div className="mb-6">
+                                    <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-1">Quantity:</label>
+                                    <input type="number" id="quantity" name="quantity" min="1" value="1"
+                                        className="w-12 text-center rounded-md border-gray-300  shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
                                 </div>
-                                <button className="flex ml-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded"
 
-                                    onClick={() => { handleAddToCart(cartData, "red", 1) }}
-                                >
+                                <div className="flex space-x-4 mb-6" onClick={() => { handleAddToCart(cartData, "red", 1) }}>
+                                    <button
+                                        className="bg-indigo-600 flex gap-2 items-center text-white px-6 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            strokeWidth="1.5" stroke="currentColor" className="size-6">
+                                            <path d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                                        </svg>
+                                        Add to Cart
+                                    </button>
+                                    <button
+                                        className="bg-gray-200 flex gap-2 items-center  text-gray-800 px-6 py-2 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            strokeWidth="1.5" stroke="currentColor" className="size-6">
+                                            <path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                                        </svg>
+                                        Wishlist
+                                    </button>
+                                </div>
 
-                                    Add to cart</button>
-
-                                <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
-                                    <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5" viewBox="0 0 24 24">
-                                        <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
-                                    </svg>
-                                </button>
+                                {/* <div>
+                                    <h3 className="text-lg font-semibold mb-2">Key Features:</h3>
+                                    <ul className="list-disc list-inside text-gray-700">
+                                        <li>Industry-leading noise cancellation</li>
+                                        <li>30-hour battery life</li>
+                                        <li>Touch sensor controls</li>
+                                        <li>Speak-to-chat technology</li>
+                                    </ul>
+                                </div> */}
                             </div>
                         </div>
                     </div>
-
                 </div>
-            </section>
-
-            <div className='md:text-2xl md:p-5 font-bold'>
-                Related products
             </div>
+
             <ReletedProducts />
         </>
     )
