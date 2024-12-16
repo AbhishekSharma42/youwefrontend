@@ -7,24 +7,25 @@ import { Link } from 'react-router-dom';
 const ReletedProducts = () => {
 
     const [getData, setData] = useState();
-    const { getReletedProduct, getReletedSlug } = useContext(Context);
+    const { getReletedSlug } = useContext(Context);
 
     // this method for releted product show into product detele 
     const GetProductByCategory = async () => {
-        const res = await fetch(`${process.env.REACT_APP_API_URL}/listings?filters[categories][name]=${getReletedProduct}&pagination[start]=0&pagination[limit]=10&populate=*`);
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/products?filters[categories][slug]=${getReletedSlug}&pagination[start]=0&pagination[limit]=10&populate=*`);
 
         const resData = await res.json();
-        setData(await resData);
+
+        setData(resData);
     }
 
     useEffect(() => {
         GetProductByCategory();
-    }, [getReletedProduct]);
+    }, [getReletedSlug]);
 
 
     return (
         <div>
-            <div className="grid grid-cols-2 sm:w-[95%] md:w-[90%] mx-auto sm:grid-cols-3 md:grid-cols-5">
+            <div className='w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-5 gap-x-14 mt-5 mb-5'>
                 {
                     getData?.data?.map((item) => (
                         <Link to={`/product/${item?.slug}`} key={item.id}>
@@ -35,7 +36,7 @@ const ReletedProducts = () => {
                     <div>
                         Loading...
                     </div>
-                    
+
                 }
             </div>
         </div>

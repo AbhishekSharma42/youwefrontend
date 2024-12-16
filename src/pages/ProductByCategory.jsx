@@ -21,7 +21,7 @@ const ProductByCategory = () => {
     return (
         <>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 md:w-[85%] mx-auto h-[80vh]">
+            <div className='w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-5 gap-x-14 mt-5 mb-5'>
                 {
                     getCategoryData?.data?.map((item) => (
                         <Link to={`/product/${item?.slug}`} key={item.id}>
@@ -29,7 +29,6 @@ const ProductByCategory = () => {
                         </Link>
                     ))
                     ||
-
                     <div>
                         Loading...
                     </div>

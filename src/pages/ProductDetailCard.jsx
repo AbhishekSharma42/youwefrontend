@@ -6,9 +6,12 @@ import { Context } from '../Utils/Context';
 import Goto from '../GoToUp';
 import ReletedProducts from '../components/ReletedProduct/ReletedProducts';
 
+import { FaStar, FaStarHalfAlt, FaCartPlus } from 'react-icons/fa';
+import { } from 'react-icons/'
+
 function ProductDetailCard() {
 
-    const { handleAddToCart, SetReletedProduct, SetReletedSlug } = useContext(Context)
+    const { handleAddToCart, SetReletedSlug } = useContext(Context)
 
     // product details
     const { str } = useParams();
@@ -20,7 +23,7 @@ function ProductDetailCard() {
     const [cartData, setCartData] = useState();
     const [images, setImages] = useState();
     // const [resSize, setResSize] = useState(0);
-    // const [sizeValue, setSizeValue] = useState("");
+    const [sizeValue, setSizeValue] = useState("");
     const [getDesc, setDesc] = useState("");
     const [getPID, setPID] = useState("");
 
@@ -34,28 +37,28 @@ function ProductDetailCard() {
 
             setThum(resData?.data[0]?.Thumbnail[0]?.url);
             setImages(resData?.data[0]?.Image)
-            
+
             setCartData(resData?.data[0])
-            
+
             setPID(resData?.data[0]?.id)
-            
+
             setDesc(resData?.data[0]?.Description);
-            
+
             setPtitle(resData?.data[0]?.Title);
             setPrices(resData?.data[0]?.Price);
             setOrignalPrices(resData?.data[0]?.orignal_price);
-            
-            SetReletedSlug(resData?.data[0]?.attributes?.categories?.data[0]?.attributes?.slug);
-            SetReletedProduct(resData?.data[0]?.attributes?.categories?.data[0]?.attributes?.name);
-            
+
+            SetReletedSlug(resData?.data[0]?.categories[0]?.slug);
+
+
         } catch (error) {
             return;
         }
     }
 
-    // const handleChange = (e) => {
-    //     setSizeValue(e.target.value);
-    // };
+    const handleChange = (e) => {
+        setSizeValue(e.target.value);
+    };
 
 
     function changeImage(src) {
@@ -67,14 +70,17 @@ function ProductDetailCard() {
         Goto();
     }, [str])
 
+    
     return (
         <>
             <div className="container flex justify-center">
                 <div className=" sm:w-[80%] justify-center flex">
                     <div className="container mx-auto px-4 py-8">
                         <div className="flex flex-wrap -mx-4">
-                            <div className="w-full md:w-1/2 px-4 mb-8">
-                                <LazyLoadImage src={thum} alt="Product" className="m-2  bg-white mx-auto h-96 rounded-lg shadow-md mb-4" id="mainImage" />
+                            <div className="w-full md:w-1/2 px-4 mb-8 mx-auto">
+                                <div className='flex justify-items-center justify-center md:w-96 bg-white mx-auto h-96 rounded-lg shadow-md mb-4'>
+                                    <LazyLoadImage src={thum} alt="Product" className="m-2 flex justify-center " id="mainImage" />
+                                </div>
 
                                 <div className="flex gap-4 py-4 justify-center overflow-x-auto">
                                     {images?.map((item) => (
@@ -83,58 +89,38 @@ function ProductDetailCard() {
                                             onClick={() => changeImage(item?.url)}
                                         />
                                     )) ||
-                                        <LazyLoadImage />
+                                        <div>
+                                            <LazyLoadImage src={""} />
+                                            <LazyLoadImage src={""} />
+                                            <LazyLoadImage src={""} />
+                                        </div>
                                     }
                                 </div>
                             </div>
 
-                            {/* show detele */}
-                            <div className="w-full md:w-1/2 px-4 bg-white shadow-md rounded-md py-2">
-                                <h2 className="text-3xl font-bold mb-2">{ptitle}</h2>
-                                <p className="text-gray-600 mb-4">Product Id:- #{getPID}</p>
+                            <div className="mx-2 w-full sm:mx-0 md:w-1/2 px-4 bg-white shadow-md rounded-md py-2">
+                                <h2 className={`text-lg md:text-xl font-semibold text-gray-900 mb-2 w-full ${ptitle ? '' : "animate-pulse w-full h-3 rounded-md bg-gray-300"}`} >{ptitle}</h2>
+                                <p className={`font-semibold text-gray-900 mb-4 `}>Product Id:- #{getPID}</p>
                                 <div className="mb-4">
                                     <span className="text-2xl font-bold mr-2"> &#x20b9;
                                         {Prices}</span>
-                                    <span className="line-through text-red-500">&#x20b9;{orignalPrices}</span>
+                                    <span className="line-through ">&#x20b9;{orignalPrices}</span>
                                 </div>
+                                {/* show Ratings */}
                                 <div className="flex items-center mb-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                        className="size-6 text-yellow-500">
-                                        <path fillRule="evenodd"
-                                            d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
-                                            clipRule="evenodd" />
-                                    </svg>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                        className="size-6 text-yellow-500">
-                                        <path fillRule="evenodd"
-                                            d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
-                                            clipRule="evenodd" />
-                                    </svg>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                        className="size-6 text-yellow-500">
-                                        <path fillRule="evenodd"
-                                            d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
-                                            clipRule="evenodd" />
-                                    </svg>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                        className="size-6 text-yellow-500">
-                                        <path fillRule="evenodd"
-                                            d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
-                                            clipRule="evenodd" />
-                                    </svg>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                        className="size-6 text-yellow-500">
-                                        <path fillRule="evenodd"
-                                            d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
-                                            clipRule="evenodd" />
-                                    </svg>
-                                    <span className="ml-2 text-gray-600">4.5 (120 reviews)</span>
+                                    <FaStar color='orange' />
+                                    <FaStar color='orange' />
+                                    <FaStar color='orange' />
+                                    <FaStar color='orange' />
+                                    <FaStarHalfAlt color='orange' />
+                                    <p className="flex px-2 font-semibold text-gray-900"> 4.5 (120 reviews)</p>
                                 </div>
+                                {/* Desc cription */}
                                 <Markdown>
                                     {getDesc ? getDesc : "NON"}
                                 </Markdown>
 
-                                <div className="mb-6">
+                                {/* <div className="mb-6">
                                     <h3 className="text-lg font-semibold mb-2">Color:</h3>
                                     <div className="flex space-x-2">
                                         <button
@@ -144,31 +130,16 @@ function ProductDetailCard() {
                                         <button
                                             className="w-8 h-8 bg-blue-500 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"></button>
                                     </div>
-                                </div>
+                                </div> */}
 
                                 <div className="mb-6">
-                                    <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-1">Quantity:</label>
-                                    <input type="number" id="quantity" name="quantity" min="1" value="1"
+                                    <label htmlFor="quantity" className="block text-xl font-semibold text-gray-700 mb-1">Quantity:</label>
+                                    <input type="number" id="quantity" name="quantity" min="1" value="1" onChange={handleChange}
                                         className="w-12 text-center rounded-md border-gray-300  shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
                                 </div>
 
-                                <div className="flex space-x-4 mb-6" onClick={() => { handleAddToCart(cartData, "red", 1) }}>
-                                    <button
-                                        className="bg-indigo-600 flex gap-2 items-center text-white px-6 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            strokeWidth="1.5" stroke="currentColor" className="size-6">
-                                            <path d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                                        </svg>
-                                        Add to Cart
-                                    </button>
-                                    <button
-                                        className="bg-gray-200 flex gap-2 items-center  text-gray-800 px-6 py-2 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            strokeWidth="1.5" stroke="currentColor" className="size-6">
-                                            <path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-                                        </svg>
-                                        Wishlist
-                                    </button>
+                                <div className=" h-fit p-5 hover:bg-red-500 bg-blue-600 shadow-lg rounded-2xl float-right md:float-left" onClick={() => { handleAddToCart(cartData, "red", 1) }}>
+                                    <FaCartPlus color='white' size={40} />
                                 </div>
 
                                 {/* <div>

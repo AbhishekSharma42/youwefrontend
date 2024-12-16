@@ -8,6 +8,7 @@ const Protective = (props) => {
     const location = useLocation()
 
     useEffect(() => {
+        // eslint-disable-next-line
 
         if (!localStorage.getItem("accessToken")) {
             navigate('/LogIn');
@@ -17,11 +18,12 @@ const Protective = (props) => {
             if (location.pathname === "/LogIn") {
                 navigate('/');
             }
-            if (location.pathname === "/SingUp") {
-                navigate('/');
+            else {
+                if (location.pathname === "/SingUp") {
+                    navigate('/');
+                }
             }
         }
-
     }, []);
 
     return (

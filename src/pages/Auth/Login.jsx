@@ -13,7 +13,7 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        let url = 'http://localhost:8000/api/token/';
+        let url = `${process.env.REACT_APP_API_URL}/token/`;
 
         let options = {
             method: 'POST',

@@ -33,7 +33,9 @@ function Index() {
 
       {/* Trandding categories */}
       <div>
-        {/* <TrandingCategoriesTitle /> */}
+        <div>
+          Trending Product
+        </div>
         <div className='w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-5 gap-x-14 mt-5 mb-5'>
           {
             getTranding?.data?.map((item) => (
@@ -41,7 +43,7 @@ function Index() {
                 <FlaseDeal thum={item?.Thumbnail[0]?.url} titles={item?.Title} price={item?.Price} lessPrice={item?.orignal_price} />
               </Link>
             )) ||
-            <div >
+            <div>
               Loading...
             </div>
           }

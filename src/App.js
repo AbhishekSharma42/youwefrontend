@@ -27,7 +27,7 @@ export default function App() {
           {/* User can access with out login  */}
           <Route path="" element={<Index />} />
           <Route path="contact" element={<ContactUs />} />
-          {/* <Route path="LogIn" element={<Login />} /> */}
+          <Route path="LogIn" element={<Login />} />
           <Route path="SingUp" element={<SingUp />} />
           <Route path="/product/:str" element={<ProductDetailCard />} />
           <Route path="product-category/:str" element={<ProductByCategory />} />
