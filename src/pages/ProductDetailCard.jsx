@@ -1,13 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import Markdown from 'markdown-to-jsx';
 import { Context } from '../Utils/Context';
 import Goto from '../GoToUp';
 import ReletedProducts from '../components/ReletedProduct/ReletedProducts';
-
 import { FaStar, FaStarHalfAlt, FaCartPlus } from 'react-icons/fa';
-import { } from 'react-icons/'
+import ReactMarkdown from 'react-markdown';
 
 function ProductDetailCard() {
 
@@ -70,7 +68,7 @@ function ProductDetailCard() {
         Goto();
     }, [str])
 
-    
+
     return (
         <>
             <div className="container flex justify-center">
@@ -115,10 +113,13 @@ function ProductDetailCard() {
                                     <FaStarHalfAlt color='orange' />
                                     <p className="flex px-2 font-semibold text-gray-900"> 4.5 (120 reviews)</p>
                                 </div>
+
                                 {/* Desc cription */}
-                                <Markdown>
-                                    {getDesc ? getDesc : "NON"}
-                                </Markdown>
+                                <div></div>
+                                <ReactMarkdown className={`prose prose-h1:text-4xl prose-h1:text-green prose-p:text-base prose-strong:text-blue prose-ul:list-decimal prose-ul:text-dark`}>
+                                    {getDesc}
+                                </ReactMarkdown>
+
 
                                 {/* <div className="mb-6">
                                     <h3 className="text-lg font-semibold mb-2">Color:</h3>
