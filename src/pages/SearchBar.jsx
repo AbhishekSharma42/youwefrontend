@@ -15,18 +15,22 @@ const SearchBar = () => {
     }
 
     const SearchProduct = async () => {
-        let res = await fetch(`http://localhost:1337/api/products?filters[Title][$contains]=${getvlaue}&populate=*`);
-        let resData = await res.json();
+        try {
+            let res = await fetch(`${process.env.REACT_APP_API_URL}/products?filters[Title][$contains]=${getvlaue}&populate=*`);
+            let resData = await res.json();
 
-        setProduct(resData);
-        if (!getvlaue.length) {
-            resData = null
+            setProduct(resData);
+            if (!getvlaue.length) {
+                resData = null
+            }
+        } catch (error) {
+            return;
         }
     }
 
     useEffect(() => {
         SearchProduct();
-    }, [getvlaue])
+    })
 
 
     return (
@@ -46,11 +50,6 @@ const SearchBar = () => {
                         </Link>
                     ))
                 }
-
-
-                {/* <!-- component --> */}
-                
-
             </div>
         </>
     )

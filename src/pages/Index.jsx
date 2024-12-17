@@ -10,7 +10,6 @@ import { Context } from '../Utils/Context';
 import { Link } from 'react-router-dom';
 import Informations from '../components/InformationCard/Informations';
 import FlaseDeal from '../components/FlaseDealCard/FlaseDeal';
-import ReactMarkdown from 'react-markdown'
 
 function Index() {
   const { getTranding } = useContext(Context);

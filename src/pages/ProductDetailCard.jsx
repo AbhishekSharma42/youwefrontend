@@ -47,8 +47,6 @@ function ProductDetailCard() {
             setOrignalPrices(resData?.data[0]?.orignal_price);
 
             SetReletedSlug(resData?.data[0]?.categories[0]?.slug);
-
-
         } catch (error) {
             return;
         }
@@ -56,6 +54,7 @@ function ProductDetailCard() {
 
     const handleChange = (e) => {
         setSizeValue(e.target.value);
+        console.log(sizeValue);
     };
 
 

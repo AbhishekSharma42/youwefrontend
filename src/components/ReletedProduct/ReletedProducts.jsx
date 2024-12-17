@@ -20,7 +20,7 @@ const ReletedProducts = () => {
 
     useEffect(() => {
         GetProductByCategory();
-    }, [getReletedSlug]);
+    });
 
 
     return (
