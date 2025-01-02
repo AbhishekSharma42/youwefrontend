@@ -3,6 +3,7 @@ import Slider from 'react-slick';
 import BestSallingCard from './BestSallingCard';
 import { Context } from '../../Utils/Context';
 import { Link } from 'react-router-dom';
+import Spinner from '../Spinner/Spinner';
 
 const Carousel = () => {
     const { bestsallings } = useContext(Context);
@@ -53,6 +54,8 @@ const Carousel = () => {
                         <BestSallingCard thum={item?.Thumbnail[0]?.url} />
                     </Link>
                 ))
+                ||
+                <Spinner />
             }
         </Slider>
     );

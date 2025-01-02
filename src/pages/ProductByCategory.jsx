@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import FlaseDeal from '../components/FlaseDealCard/FlaseDeal';
+import Spinner from '../components/Spinner/Spinner';
 
 const ProductByCategory = () => {
     const { str } = useParams();
@@ -29,9 +30,7 @@ const ProductByCategory = () => {
                         </Link>
                     ))
                     ||
-                    <div>
-                        Loading...
-                    </div>
+                    <Spinner/>
                 }
             </div>
         </>

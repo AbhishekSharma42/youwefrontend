@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import FlaseDeal from '../FlaseDealCard/FlaseDeal'
 import { Context } from '../../Utils/Context'
 import { Link } from 'react-router-dom';
+import Spinner from '../Spinner/Spinner';
 
 
 const ReletedProducts = () => {
@@ -33,10 +34,7 @@ const ReletedProducts = () => {
                         </Link>
                     ))
                     ||
-                    <div>
-                        Loading...
-                    </div>
-
+                    <Spinner />
                 }
             </div>
         </div>

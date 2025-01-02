@@ -10,12 +10,13 @@ import { Context } from '../Utils/Context';
 import { Link } from 'react-router-dom';
 import Informations from '../components/InformationCard/Informations';
 import FlaseDeal from '../components/FlaseDealCard/FlaseDeal';
+import Spinner from '../components/Spinner/Spinner';
 
 function Index() {
   const { getTranding } = useContext(Context);
 
   useEffect(() => {
-    document.title = "YouWe Fashion"
+    document.title = "Shopypi"
   }, [])
 
   return (
@@ -33,7 +34,7 @@ function Index() {
 
       {/* Trandding categories */}
       <div>
-        <div>
+        <div className='flex justify-between items-center mx-auto w-[88%] font-semibold text-base md:text-2xl'>
           Trending Product
         </div>
         <div className='w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-5 gap-x-14 mt-5 mb-5'>
@@ -44,7 +45,7 @@ function Index() {
               </Link>
             )) ||
             <div>
-              Loading...
+              <Spinner />
             </div>
           }
         </div>

@@ -20,7 +20,7 @@ const AppContext = (props) => {
     const [PhoneCrouselCardSize] = useState(2);
 
     // App Name Handle
-    const [appName, setAppName] = useState("YouW Fashion");
+    const [appName, setAppName] = useState("Shopypi");
     // #####################################
 
     // footer data handle
@@ -32,7 +32,7 @@ const AppContext = (props) => {
     // ####################################
 
     // contact us data handle
-    const [contactUsHading] = useState("YouWe Fashion Contact Us");
+    const [contactUsHading] = useState("Shopypi Contact Us");
     // ####################################
 
     // Best Selling Product api 

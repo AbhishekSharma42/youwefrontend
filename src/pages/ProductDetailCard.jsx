@@ -21,7 +21,7 @@ function ProductDetailCard() {
     const [cartData, setCartData] = useState();
     const [images, setImages] = useState();
     // const [resSize, setResSize] = useState(0);
-    const [sizeValue, setSizeValue] = useState("");
+    const [sizeValue, setSizeValue] = useState(1);
     const [getDesc, setDesc] = useState("");
     const [getPID, setPID] = useState("");
 
@@ -54,7 +54,6 @@ function ProductDetailCard() {
 
     const handleChange = (e) => {
         setSizeValue(e.target.value);
-        console.log(sizeValue);
     };
 
 
@@ -103,6 +102,7 @@ function ProductDetailCard() {
                                         {Prices}</span>
                                     <span className="line-through ">&#x20b9;{orignalPrices}</span>
                                 </div>
+
                                 {/* show Ratings */}
                                 <div className="flex items-center mb-4">
                                     <FaStar color='orange' />
@@ -119,7 +119,6 @@ function ProductDetailCard() {
                                     {getDesc}
                                 </ReactMarkdown>
 
-
                                 {/* <div className="mb-6">
                                     <h3 className="text-lg font-semibold mb-2">Color:</h3>
                                     <div className="flex space-x-2">
@@ -134,13 +133,20 @@ function ProductDetailCard() {
 
                                 <div className="mb-6">
                                     <label htmlFor="quantity" className="block text-xl font-semibold text-gray-700 mb-1">Quantity:</label>
-                                    <input type="number" id="quantity" name="quantity" min="1" value="1" onChange={handleChange}
-                                        className="w-12 text-center rounded-md border-gray-300  shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+
+                                    {images ?
+                                        <input type="number" id="quantity" name="quantity" min="1" value={sizeValue} onChange={handleChange}
+                                            className="w-12 text-center rounded-md border-gray-300  shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+                                        : ""
+                                    }
                                 </div>
 
-                                <div className=" h-fit p-5 hover:bg-red-500 bg-blue-600 shadow-lg rounded-2xl float-right md:float-left" onClick={() => { handleAddToCart(cartData, "red", 1) }}>
-                                    <FaCartPlus color='white' size={40} />
-                                </div>
+                                {images ?
+                                    <div className="cursor-pointer h-fit p-5 hover:bg-red-500 bg-blue-600 shadow-lg rounded-2xl float-right md:float-left" onClick={() => { handleAddToCart(cartData, "red", 1) }}>
+                                        <FaCartPlus color='white' size={40} />
+                                    </div>
+                                    : ""
+                                }
 
                                 {/* <div>
                                     <h3 className="text-lg font-semibold mb-2">Key Features:</h3>

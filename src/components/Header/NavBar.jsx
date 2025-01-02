@@ -34,7 +34,7 @@ function NavBar() {
                     <ul className={`absolute bg-cyan-950 ${openNav ? 'block z-40 transition-all duration-200  -ml-7 mt-4 h-fit p-3 rounded-br-md rounded-bl-md' : 'hidden'} h-[10rem] flex flex-col transition-all duration-100 sm:mt-[0rem] sm:relative sm:main-header sm:h-12 sm:items-center sm:backdrop-blur-sm sm:flex sm:flex-row sm:justify-around sm:space-x-5`}>
                         <Link to="/" className='hover:bg-red-500  md:rounded-xl p-1 cursor-pointer'>Home</Link>
                         <Link to="contact" className='hover:bg-red-500  md:rounded-xl p-1 cursor-pointer'>Contact</Link>
-                        <Link to="customize" className='hover:bg-red-500 md:rounded-xl p-1 cursor-pointer'>Customize</Link>
+                        {/* <Link to="customize" className='hover:bg-red-500 md:rounded-xl p-1 cursor-pointer'>Customize</Link> */}
                         <Link to="catagres" className='hover:bg-red-500 md:rounded-xl p-1 cursor-pointer'>Categoryes</Link>
                     </ul>
                 </div>

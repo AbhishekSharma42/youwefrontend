@@ -16,6 +16,8 @@ import ProductByCategory from './pages/ProductByCategory';
 import Login from './pages/Auth/Login';
 import SingUp from './pages/Auth/SingUp';
 import SearchBar from './pages/SearchBar';
+import Success from './pages/Success';
+import PayFail from './pages/PayFail';
 
 export default function App() {
   return (
@@ -38,6 +40,8 @@ export default function App() {
           <Route path='serach' element={<SearchBar />} />
           <Route path='Galary' element={<Galary />} />
           <Route path="*" element={<PageNotFound />} />
+          <Route path='/success' element={<Success />} />
+          <Route path='/PayFail' element={<PayFail />} />
 
           {/* user can access after Login Login Required */}
           <Route path='My-Order' element={<Protective comp={Galary} />} />
@@ -46,6 +50,6 @@ export default function App() {
         </Routes>
         <Footer />
       </AppContext>
-    </BrowserRouter>
+    </BrowserRouter >
   );
 }

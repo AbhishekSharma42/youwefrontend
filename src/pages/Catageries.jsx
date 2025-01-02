@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Context } from '../Utils/Context'
 import CatagresCard from '../components/CatagrresCard/CatagresCard';
 import { Link } from 'react-router-dom';
+import Spinner from '../components/Spinner/Spinner';
 
 const Catageries = () => {
     const { getAllCategory } = useContext(Context);
@@ -22,6 +23,8 @@ const Catageries = () => {
                             <CatagresCard thum={item?.Image?.url} />
                         </Link>
                     ))
+                    ||
+                    <Spinner />
                 }
             </div>
 
