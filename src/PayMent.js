@@ -16,11 +16,14 @@ const PayMent2 = async (Product) => {
             body: JSON.stringify({ Product })
         })
 
+        
+
         stripe.redirectToCheckout({
             lineItems: Product,
             mode: "payment",
+            sessionId: res?.data?.stripeSession?.id,
             successUrl: "http://localhost:3000/Success",
-            cancelUrl: "http://localhost:3000/PayFail"
+            cancelUrl: "http://localhost:3000/PayFail",
         }).then(result => {
             if (result.error) {
                 alert(result.error.message);
@@ -31,6 +34,8 @@ const PayMent2 = async (Product) => {
         console.log(error);
     }
 };
+
+PayMent2();
 
 
 // *********************************************************************
