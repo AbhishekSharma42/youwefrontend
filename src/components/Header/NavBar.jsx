@@ -35,7 +35,7 @@ function NavBar() {
                         <Link to="/" className='hover:bg-red-500  md:rounded-xl p-1 cursor-pointer'>Home</Link>
                         <Link to="contact" className='hover:bg-red-500  md:rounded-xl p-1 cursor-pointer'>Contact</Link>
                         {/* <Link to="customize" className='hover:bg-red-500 md:rounded-xl p-1 cursor-pointer'>Customize</Link> */}
-                        <Link to="catagres" className='hover:bg-red-500 md:rounded-xl p-1 cursor-pointer'>Categoryes</Link>
+                        <Link to="catagres" className='hover:bg-red-500 md:rounded-xl p-1 cursor-pointer'>Categories</Link>
                     </ul>
                 </div>
 
@@ -64,7 +64,7 @@ function NavBar() {
                 {/* Authantication */}
                 <Link to="LogIn" className='text-white hover:cursor-pointer hover:text-red-400'>LogIn</Link>
                 <Link to="/" className='text-white hover:cursor-pointer hover:text-red-400'>Logout</Link>
-                <Link to="/SingUp" className='text-white hover:cursor-pointer hover:text-red-400'>SingUp</Link>
+                <Link to="/SingUp" className='text-white hover:cursor-pointer hover:text-red-400'>SignUp</Link>
 
             </div>
         </>

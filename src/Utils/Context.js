@@ -25,10 +25,10 @@ const AppContext = (props) => {
 
     // footer data handle
     // ####################################
-    const [FooteText, setFooteText] = useState("");
+    const [FooteText, setFooteText] = useState("Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita obcaecati dicta veniam! Porro sit iusto debitis nisi facilis quaerat minus, inventore error dolorum qui.");
 
-    const [Phone, SetPhone] = useState("");
-    const [mail, setmail] = useState("");
+    const [Phone, SetPhone] = useState("7310963345");
+    const [mail, setmail] = useState("ak9969489@gmail.com");
     // ####################################
 
     // contact us data handle

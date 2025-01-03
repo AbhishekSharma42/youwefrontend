@@ -18,6 +18,8 @@ import SingUp from './pages/Auth/SingUp';
 import SearchBar from './pages/SearchBar';
 import Success from './pages/Success';
 import PayFail from './pages/PayFail';
+import PrivacPolicy from './pages/PrivacPolicy';
+import Customer from './pages/Customer';
 
 export default function App() {
   return (
@@ -39,6 +41,9 @@ export default function App() {
           <Route path='customize' element={<CustomDesign />} />
           <Route path='serach' element={<SearchBar />} />
           <Route path='Galary' element={<Galary />} />
+          <Route path='Privacy-Policy' element={<PrivacPolicy />} />
+          <Route path='Custumer' element={<Customer />} />
+
           <Route path="*" element={<PageNotFound />} />
           <Route path='/success' element={<Success />} />
           <Route path='/PayFail' element={<PayFail />} />
